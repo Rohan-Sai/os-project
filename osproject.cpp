@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-int students[3][4],ns=3,scheduler[1000],arrivedStudents[100],nap=0;
+int students[3][5],ns=3,scheduler[1000],arrivedStudents[100],nap=0;
 unsigned int time=0;
 
 void getSystem()
@@ -153,6 +153,7 @@ void waitingTime()
 		students[i][3]=releaseTime-students[i][0]-students[i][1]-1;
 	}
 }
+
 void printWaitingTime()
 {
 	int waitingTime= 0;
@@ -167,6 +168,31 @@ void printWaitingTime()
 	AWT = waitingTime/(float)ns;
 	printf("\nAverage Waiting Time = %f", AWT);
 }
+void turnaroundTime()
+{
+	unsigned int releaseTime,t;
+	for(unsigned int i=0; i<ns; i++)
+	{
+		for(t=time-1;scheduler[t]!=i;t--);
+		releaseTime=t+1;
+		students[i][4]=releaseTime-students[i][0]-1;
+	}
+}
+void printturnaroundTime()
+{
+	int turnaroundTime= 0;
+	float TAT;
+	printf("\nTurn Around Time For Each Process: \n");
+	for(unsigned int i=0; i<ns; i++)
+	{
+		printf("\nTAT(%d) = %d", i+1, students[i][4]);
+		turnaroundTime=turnaroundTime+students[i][4];
+	//	tat=waitingTilmeSumm+students[i][3];
+	}
+	TAT = turnaroundTime/(float)ns;
+	printf("\nAverage Turn Around Time = %f",TAT);
+}
+
 int main()
 {
 	getSystem(); 
@@ -175,4 +201,6 @@ int main()
 	printScheduler();
 	waitingTime();
 	printWaitingTime();
+	turnaroundTime();
+	printturnaroundTime();
 }
