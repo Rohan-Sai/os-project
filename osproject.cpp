@@ -1,20 +1,18 @@
 #include<stdio.h>
 #include<stdlib.h>
-int processes[3][4],np=3,scheduler[1000],arrivedProcesses[100],nap=0;
+int students[3][4],ns=3,scheduler[1000],arrivedStudents[100],nap=0;
 unsigned int time=0;
 
 void getSystem()
 {
-//	printf("\nEnter number of processes: ");
-//	scanf("%d",&np);
-	for(int i=0;i<np;i++)
+	for(int i=0;i<ns;i++)
 	{
 		printf("\n Arrival Time of P%d: ",i+1);
-		scanf("%d",&processes[i][0]);
+		scanf("%d",&students[i][0]);
 		printf("\n Burst Time of P%d: ",i+1);
-		scanf("%d",&processes[i][1]);
-		processes[i][2]=processes[i][1];
-		printf("\n ----------------------------");	
+		scanf("%d",&students[i][1]);
+		students[i][2]=students[i][1];
+    	printf("\n ----------------------------");	
 	}
 }
 
@@ -22,17 +20,17 @@ void printSystem()
 {
 	printf("\n\t\tOur System is :");
 	printf("\nPi:  AT  BT RT");
-	for(int i=0; i<np; i++)
+	for(int i=0; i<ns; i++)
 	{
-		printf("\nP%d:  %d  %d  %d", i+1, processes[i][0], processes[i][1], processes[i][2]);
+		printf("\nP%d:  %d  %d  %d", i+1, students[i][0], students[i][1], students[i][2]);
 	}
 } 
 
-unsigned int remainTimes()
+unsigned int remainingTime()
 {
-	for(int i=0;i<np;i++)
+	for(int i=0;i<ns;i++)
 	{
-		if(processes[i][2]>0)
+		if(students[i][2]>0)
 		{
 			return 1;
 		}
@@ -40,42 +38,42 @@ unsigned int remainTimes()
 	return 0;
 }
 
-void addArivedProcesses()
+void addArivedStudents()
 {
-	for(int i=0;i<np;i++)
+	for(int i=0;i<ns;i++)
 	{
-		if(processes[i][0]==time)
+		if(students[i][0]==time)
 		{
-			arrivedProcesses[nap]=i;
+			arrivedStudents[nap]=i;
 			nap++;
 		}
 	}
 }
 
-void printArrivedProcesses()
+void printArrivedStudents()
 {
-	printf("\n\nArrived Processes %d : ",nap);   //nap=no of arrived processes
+	printf("\n\nArrived Students %d : ",nap);   //nap=no of arrived students
 	for(int i=0;i<nap;i++)
 	{
-		printf(" %d ",arrivedProcesses[i]+1);
+		printf(" %d ",arrivedStudents[i]+1);
 	}
 }
 
-int getSRT()
+int getLRT()
 {
 	if(nap==0)
 	{
 		return -1;
 	}
 	unsigned int largestRTP,largestRTPIndex;
-	largestRTPIndex=arrivedProcesses[0];
-	largestRTP=processes[arrivedProcesses[0]][2];
+	largestRTPIndex=arrivedStudents[0];
+	largestRTP=students[arrivedStudents[0]][2];
 	for(int i=0;i<nap;i++)
 	{
-		if(processes[arrivedProcesses[i]][2]>largestRTP)
+		if(students[arrivedStudents[i]][2]>largestRTP)
 		{
-			largestRTP = processes[arrivedProcesses[i]][2];
-			largestRTPIndex = arrivedProcesses[i];
+			largestRTP = students[arrivedStudents[i]][2];
+			largestRTPIndex = arrivedStudents[i];
 		}
 	}
 	return largestRTPIndex;
@@ -83,41 +81,36 @@ int getSRT()
 
 void removeFromArrivedProcesses(int toRun)
 {
-	printArrivedProcesses();
+	printArrivedStudents();
 	int temp[100];
 	int x = 0;
 	for(int i=0; i< nap; i++)
 	{
-		if(arrivedProcesses[i] != toRun)
+		if(arrivedStudents[i] != toRun)
 		{
-			temp[x] = arrivedProcesses[i];
+			temp[x] = arrivedStudents[i];
 			x++;
-			
 		}
 	}
 	nap=nap-1;
 	for(int i=0; i<nap; i++)
 	{
-		arrivedProcesses[i] = temp[i];
-	}
-//	printArrivedProcesses();
-	
+		arrivedStudents[i] = temp[i];
+	}	
 }
-
-//}
 
 void schedule()
 {
-	int x;
+//	int x;
 	int toRun;
-	while(remainTimes()) //boolean function
+	while(remainingTime()) //boolean function
 	{
-		addArivedProcesses();
-		printArrivedProcesses();
-		toRun = getSRT();
+		addArivedStudents();
+		printArrivedStudents();
+		toRun = getLRT();
 		scheduler[time] = toRun;
-		processes[toRun][2]--;
-		if(processes[toRun][2]==0)
+		students[toRun][2]=students[toRun][2]-1;
+		if(students[toRun][2]==0)
 		{
 			removeFromArrivedProcesses(toRun);
 		}
@@ -153,25 +146,25 @@ void printScheduler()
 void waitingTime()
 {
 	unsigned int releaseTime,t;
-	for(unsigned int i=0; i<np; i++)
+	for(unsigned int i=0; i<ns; i++)
 	{
 		for(t=time-1;scheduler[t]!=i;t--);
 		releaseTime=t+1;
-		processes[i][3]=releaseTime-processes[i][0]-processes[i][1];
+		students[i][3]=releaseTime-students[i][0]-students[i][1]-1;
 	}
 }
 void printWaitingTime()
 {
-	int waitingTilmeSumm = 0,tat=0;
+	int waitingTime= 0;
 	float AWT;
 	printf("\nWaiting Time For Each Process: \n");
-	for(unsigned int i=0; i<np; i++)
+	for(unsigned int i=0; i<ns; i++)
 	{
-		printf("\nWT(%d) = %d", i+1, processes[i][3]);
-		waitingTilmeSumm = waitingTilmeSumm + processes[i][3];
-		tat=waitingTilmeSumm+processes[i][3];
+		printf("\nWT(%d) = %d", i+1, students[i][3]);
+		waitingTime=waitingTime+students[i][3];
+	//	tat=waitingTilmeSumm+students[i][3];
 	}
-	AWT = waitingTilmeSumm/(float)np;
+	AWT = waitingTime/(float)ns;
 	printf("\nAverage Waiting Time = %f", AWT);
 }
 int main()
