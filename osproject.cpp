@@ -5,15 +5,22 @@ unsigned int time=0;
 
 void getSystem()
 {
-	for(int i=0;i<ns;i++)
-	{
-		printf("\n Arrival Time of P%d: ",i+1);
-		scanf("%d",&students[i][0]);
-		printf("\n Burst Time of P%d: ",i+1);
-		scanf("%d",&students[i][1]);
+		printf("\n Arrival Time of P:%d-> ",2132);
+		scanf("%d",&students[0][0]);
+		printf("\n Burst Time of P %d-> ",2132);
+		scanf("%d",&students[0][1]);
+		printf("\n Arrival Time of P %d-> ",2102);
+		scanf("%d",&students[1][0]);
+		printf("\n Burst Time of P %d-> ",2102);
+		scanf("%d",&students[1][1]);
+		printf("\n Arrival Time of P %d-> ",2453);
+		scanf("%d",&students[2][0]);
+		printf("\n Burst Time of P %d-> ",2453);
+		scanf("%d",&students[2][1]);
+		for(int i=0;i<ns;i++)
 		students[i][2]=students[i][1];
     	printf("\n ----------------------------");	
-	}
+
 }
 
 void printSystem()
