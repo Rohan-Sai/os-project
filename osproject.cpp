@@ -19,11 +19,12 @@ void getSystem()
 void printSystem()
 {
 	printf("\n\t\tOur System is :");
-	printf("\nPi:  AT  BT RT");
+	printf("\nSi:  AT  BT RT");
 	for(int i=0; i<ns; i++)
 	{
-		printf("\nP%d:  %d  %d  %d", i+1, students[i][0], students[i][1], students[i][2]);
+		printf("\nS%d:  %d  %d  %d", i+1, students[i][0], students[i][1], students[i][2]);
 	}
+	printf("\n ---------------------------------");
 } 
 
 unsigned int remainingTime()
@@ -101,7 +102,6 @@ void removeFromArrivedProcesses(int toRun)
 
 void schedule()
 {
-//	int x;
 	int toRun;
 	while(remainingTime()) //boolean function
 	{
@@ -120,7 +120,7 @@ void schedule()
 		}
 		else
 		{
-		printf("\nRun=P%d,Time = %d",toRun+1,time);
+		printf("\nRun=S%d,Time = %d",toRun+1,time);
 		}
 		printSystem();
 		time++;
